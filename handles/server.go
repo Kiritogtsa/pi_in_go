@@ -28,7 +28,7 @@ func Serverinit(port string) {
 			r.Route("/", inithome)
 		})
 		r.Group(func(r chi.Router) {
-			r.Route("/public", usersrotas)
+			r.Route("/public", Publicassrotas)
 		})
 		http.ListenAndServe(port, r)
 	}
@@ -55,8 +55,9 @@ func privatesrotes(r chi.Router) {
 	r.Put("/", func(w http.ResponseWriter, r *http.Request) {})
 }
 
-func usersrotas(r chi.Router) {
+func Publicassrotas(r chi.Router) {
 	r.Post("/login", middler.Login)
+	r.Get("/trabalhos", middler.Gettrabalhos)
 }
 
 func inithome(r chi.Router) {

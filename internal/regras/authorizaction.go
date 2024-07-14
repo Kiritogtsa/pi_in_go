@@ -11,6 +11,7 @@ type middlerlvlsauthoriazactionit interface {
 	Gerente(http.Handler) http.Handler
 	Gerenteoraxiliar(http.Handler) http.Handler
 	Login(http.ResponseWriter, *http.Request)
+	Gettrabalhos(http.ResponseWriter, *http.Request)
 }
 
 type middlerlvlsauthoriazaction struct {
@@ -36,4 +37,7 @@ func (a *middlerlvlsauthoriazaction) Gerenteoraxiliar(next http.Handler) http.Ha
 
 func (a *middlerlvlsauthoriazaction) Gerente(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
+}
+
+func (a *middlerlvlsauthoriazaction) Gettrabalhos(w http.ResponseWriter, r *http.Request) {
 }

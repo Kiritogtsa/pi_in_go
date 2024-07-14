@@ -1,0 +1,12 @@
+{
+    "db":{
+        "user":"root",
+        "port":"3306",
+        "host":"localhost",
+        "passowd":"",
+        "db_name":"sistrh"
+    },
+    "app":{
+        "port":":8000"
+    }
+}

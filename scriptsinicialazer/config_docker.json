@@ -1,0 +1,12 @@
+{
+    "db":{
+        "user":"root",
+        "port":"3306",
+        "host":"mysql_pi",
+        "passowd":"1234",
+        "db_name":"sistrh"
+    },
+    "app":{
+        "port":":80"
+    }
+}

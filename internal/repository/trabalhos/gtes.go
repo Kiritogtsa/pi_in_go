@@ -7,5 +7,21 @@ type Gets interface {
 }
 
 func (t *trabalhos) Getall() ([]entries.Trabalhos, error) {
-	return nil, nil
+	query := "select * from trabalhos"
+	rows, err := t.conn.Conndb.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	trabalhos := make([]entries.Trabalhos, 1)
+
+	for rows.Next() {
+		var trabalho entries.Trabalhos
+		err = rows.Scan(&trabalho.ID, &trabalho.Nome, &trabalho.Descricao)
+		if err != nil {
+			continue
+		} else {
+			trabalhos = append(trabalhos, trabalho)
+		}
+	}
+	return trabalhos, nil
 }

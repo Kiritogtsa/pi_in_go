@@ -1,8 +1,14 @@
 package handles
 
 import (
+	"encoding/json"
 	"net/http"
 
+	"golang.org/x/crypto/bcrypt"
+
+	"github.com/Kiritogtsa/pi_in_go/internal/domains/entries"
+	"github.com/Kiritogtsa/pi_in_go/internal/repository/trabalhos"
+	"github.com/Kiritogtsa/pi_in_go/internal/repository/users"
 	"github.com/Kiritogtsa/pi_in_go/utils"
 )
 
@@ -16,15 +22,54 @@ func Newhandles() *Handle {
 }
 
 func (u *Handle) Login(w http.ResponseWriter, r *http.Request) {
+	userdao := users.Nuserre()
+	var userpost entries.User
+	err := json.NewDecoder(r.Body).Decode(&userpost)
+	if err != nil {
+		http.Error(w, "nao foi possivel obter o json", http.StatusInternalServerError)
+		return
+	}
+	user, err := userdao.GetByemail(userpost.Email)
+	if err != nil {
+		http.Error(w, "nao foi possivel obter o json", http.StatusInternalServerError)
+		return
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(string(user.Senha)), []byte(string(userpost.Senha)))
+	if err != nil {
+		http.Error(w, "senha invalida", http.StatusNonAuthoritativeInfo)
+		return
+	}
 	w.Write([]byte(string("teste")))
 }
 
 func (u *Handle) Gettrabalhos(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(string("oi")))
+	trabalhosdao := trabalhos.Newtradb()
+	trabalhos, err := trabalhosdao.Getall()
+	if err != nil {
+		http.Error(w, "not entries trabalhos", http.StatusInternalServerError)
+		return
+	}
+	json, err := json.Marshal(trabalhos)
+	if err != nil {
+		http.Error(w, "nao foi possivel virar json", http.StatusInternalServerError)
+		return
+	}
+	w.Write(json)
 }
 
 func (u *Handle) Getallusers(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(string("oi")))
+	usersdao := users.Nuserre()
+	users, err := usersdao.Getall()
+	if err != nil {
+		http.Error(w, "not entries users", http.StatusInternalServerError)
+		return
+	}
+	json, err := json.Marshal(users)
+	if err != nil {
+		http.Error(w, "nao foi possivel virar json", http.StatusInternalServerError)
+		return
+	}
+	w.Write(json)
 }
 
 func (u *Handle) Postuser(w http.ResponseWriter, r *http.Request) {

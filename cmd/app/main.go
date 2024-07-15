@@ -9,10 +9,10 @@ import (
 	"github.com/Kiritogtsa/pi_in_go/handles"
 )
 
-// func server() {
-// 	r := chi.NewRouter()
-// 	r.Group(func(r chi.Router) {
-
+//	func server() {
+//		r := chi.NewRouter()
+//		r.Group(func(r chi.Router) {
+//
 //		})
 //	}
 func tempo(t chan string) {

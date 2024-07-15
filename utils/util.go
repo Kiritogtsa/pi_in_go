@@ -1,10 +1,13 @@
 package utils
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type Utilsi interface {
 	Pasejson(*http.Request, any) (any, error)
 	Decoderjson(*http.Request, any) (any, error)
+	Serverfile(http.ResponseWriter, *http.Request, string)
 }
 
 type Util struct{}
@@ -19,4 +22,7 @@ func (u *Util) Pasejson(r *http.Request, ty any) (any, error) {
 
 func (u *Util) Decoderjson(r *http.Request, ty any) (any, error) {
 	return nil, nil
+}
+
+func (u *Util) Serverfile(w http.ResponseWriter, r *http.Request, fn string) {
 }

@@ -2,6 +2,7 @@ package handles
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -73,10 +74,38 @@ func (u *Handle) Getallusers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *Handle) Postuser(w http.ResponseWriter, r *http.Request) {
+	var user entries.User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		fmt.Println(" -- ", err)
+		http.Error(w, "json invalido", http.StatusInternalServerError)
+		return
+	}
+	userdao := users.Nuserre()
+	err = userdao.Persit(&user)
+	if err != nil {
+		fmt.Println(" -- ", err)
+		http.Error(w, "deu algo erro ao criar o usuario", http.StatusInternalServerError)
+		return
+	}
 	w.Write([]byte(string("oi")))
 }
 
 func (u *Handle) Postrabalho(w http.ResponseWriter, r *http.Request) {
+	var trabalho entries.Trabalhos
+	err := json.NewDecoder(r.Body).Decode(&trabalho)
+	if err != nil {
+		fmt.Println(" -- ", err)
+		http.Error(w, "json invalido", http.StatusInternalServerError)
+		return
+	}
+	trabalhosdao := trabalhos.Newtradb()
+	err = trabalhosdao.Persit(&trabalho)
+	if err != nil {
+		fmt.Println(" -- ", err)
+		http.Error(w, "deu algo erro ao criar o usuario", http.StatusInternalServerError)
+		return
+	}
 	w.Write([]byte(string("oi")))
 }
 

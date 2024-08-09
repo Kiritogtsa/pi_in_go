@@ -8,22 +8,34 @@ import (
 )
 
 type User struct {
-	ID       int    `gorm:"column:ID" json:"id"`
-	Name     string `gorm:"column:NOME" json:"name"`
-	Cpf      string `gorm:"column:CPF" json:"cpf"`
-	Email    string `gorm:"column:EMAIL" json:"email"`
-	Senha    string `gorm:"column:SENHA" json:"senha"`
-	DataNas  string `gorm:"column:DATA_NASCIMENTO" json:"data_nas"`
-	DataAd   string `gorm:"column:DATA_ADMISSAO" json:"data_ad"`
-	Telefone int64  `gorm:"column:TELEFONE" json:"telefone"`
-	Sexo     string `gorm:"column:SEXO" json:"sexo"`
-	Grupo    string `gorm:"column:GRUPO" json:"grupo"`
-	DeleteAt string `gorm:"column:DELETE_AT" json:"delete_at"`
-	TrID     int    `gorm:"column:TR_ID" json:"tr_id"`
+	ID       int     `gorm:"column:ID"              json:"id"`
+	Name     string  `gorm:"column:NOME"            json:"name"`
+	Cpf      string  `gorm:"column:CPF"             json:"cpf"`
+	Email    string  `gorm:"column:EMAIL"           json:"email"`
+	Senha    string  `gorm:"column:SENHA"           json:"senha"`
+	DataNas  string  `gorm:"column:DATA_NASCIMENTO" json:"data_nas"`
+	DataAd   string  `gorm:"column:DATA_ADMISSAO"   json:"data_ad"`
+	Telefone int64   `gorm:"column:TELEFONE"        json:"telefone"`
+	Sexo     string  `gorm:"column:SEXO"            json:"sexo"`
+	Grupo    string  `gorm:"column:GRUPO"           json:"grupo"`
+	DeleteAt string  `gorm:"column:DELETE_AT"       json:"delete_at"`
+	TrID     int     `gorm:"column:TR_ID"           json:"tr_id"`
+	Salario  Salario `                              json:"Salario"`
 }
 
-func Newuser(nome string, cpf string, email string, senha string, data_nas string, data_ad string, telefone int64, sexo string, grupo string) (*User, error) {
-	if Validarcpf(cpf) != true {
+func Newuser(
+	nome string,
+	cpf string,
+	email string,
+	senha string,
+	data_nas string,
+	data_ad string,
+	telefone int64,
+	sexo string,
+	grupo string,
+	Salario *Salario,
+) (*User, error) {
+	if !Validarcpf(cpf) {
 		return nil, errors.New("nao foi possivel criar um cpf")
 	}
 
@@ -36,8 +48,10 @@ func Newuser(nome string, cpf string, email string, senha string, data_nas strin
 		DataAd:  data_ad,
 		Sexo:    sexo,
 		Grupo:   grupo,
+		Salario: *Salario,
 	}, nil
 }
+
 func Validarcpf(cpf string) bool {
 	cpf = strings.Map(func(r rune) rune {
 		if unicode.IsDigit(r) {
